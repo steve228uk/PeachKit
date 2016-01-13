@@ -150,11 +150,15 @@ extension Peach {
             .responseJSON { response in
                 
                 if response.result.isSuccess {
-                    Swift.print(response.result.value)
-                } else {
-                    callback(nil, response.result.error)
+                    if let value = response.result.value {
+                        let json = JSON(value)
+                        let stream = parseStream(json["data"])
+                        callback(stream, response.result.error)
+                        return
+                    }
                 }
                 
+                callback(nil, response.result.error)
             }
         
     }

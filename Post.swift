@@ -70,6 +70,12 @@ extension Peach {
         return post
     }
     
+    /**
+     Create a new post on peach
+     
+     - parameter messages: An array of messages to send to peach
+     - parameter callback: Catch any errors that may occur
+     */
     public class func createPost(messages: [Message], callback: (NSError?) -> Void) {
         
         let msgs = ["message": messages.map { $0.dictionary }]
