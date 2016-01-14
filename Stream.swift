@@ -77,6 +77,13 @@ public struct Stream {
         }
     }
     
+    /**
+     Mark the stream as read on Peach
+     */
+    public func markAsRead() {
+        markAsRead(nil)
+    }
+    
 }
 
 extension Peach {

@@ -90,4 +90,23 @@ extension Peach {
         return activity
     }
     
+    /**
+     Mark the Activity feed as read
+     
+     - parameter callback: Optional callback to check for error
+     */
+    public class func markActivityRead(callback: ((NSError?) -> Void)?) {
+        Alamofire.request(API.MarkActivityRead)
+            .responseJSON { response in
+                callback?(response.result.error)
+            }
+    }
+    
+    /**
+     Mark the Activity feed as read
+     */
+    public class func markActivityRead() {
+        markActivityRead(nil)
+    }
+    
 }

@@ -14,6 +14,7 @@ enum API: URLRequestConvertible {
     
     case Authenticate(String, String)
     case Activity
+    case MarkActivityRead
     case Connections
     case Explore
     case Stream(String)
@@ -29,7 +30,7 @@ enum API: URLRequestConvertible {
         switch self {
             case .Authenticate, .CreatePost:
                 return .POST
-            case .MarkStreamRead:
+            case .MarkStreamRead, .MarkActivityRead:
                 return .PUT
             default:
                 return .GET
@@ -41,6 +42,8 @@ enum API: URLRequestConvertible {
             case .Authenticate:
                 return "/login"
             case .Activity:
+                return "/activity"
+            case .MarkActivityRead:
                 return "/activity"
             case .Connections:
                 return "/connections"
