@@ -18,6 +18,69 @@ public struct FriendRequest {
     /// Stream releated to the friend request
     public var stream: Stream?
     
+    /**
+     Accept the friend request
+     
+     - parameter callback: Optional callback
+     */
+    public func accept(callback: ((NSError?) -> Void)?) {
+        if let requestID = id {
+            Alamofire.request(API.AcceptFriendRequest(requestID))
+                .responseJSON { response in
+                    callback?(response.result.error)
+                }
+        }
+    }
+    
+    /**
+     Accept the friend request
+     */
+    public func accept() {
+        accept(nil)
+    }
+    
+    /**
+     Decline the friend request
+     
+     - parameter callback: Optional callback
+     */
+    public func decline(callback: ((NSError?) -> Void)?) {
+        if let requestID = id {
+            Alamofire.request(API.DeclineFriendRequest(requestID))
+                .responseJSON { response in
+                    callback?(response.result.error)
+            }
+        }
+    }
+    
+    /**
+     Decline the friend request
+     */
+    public func decline() {
+        decline(nil)
+    }
+    
+    /**
+     Ignore the friend request
+     
+     - parameter callback: Optional callback
+     */
+    public func ignore(callback: ((NSError?) -> Void)?) {
+        if let requestID = id {
+            Alamofire.request(API.IgnoreFriendRequest(requestID))
+                .responseJSON { response in
+                    callback?(response.result.error)
+            }
+        }
+    }
+    
+    /**
+     Ignore the friend request
+     */
+    public func ignore() {
+        ignore(nil)
+    }
+    
 }
 
 extension Peach {

@@ -21,6 +21,9 @@ enum API: URLRequestConvertible {
     case CreatePost([String:AnyObject]?)
     case MarkStreamRead(String)
     case FriendRequests
+    case AcceptFriendRequest(String)
+    case DeclineFriendRequest(String)
+    case IgnoreFriendRequest(String)
     
     // MARK: - URLRequestConvertible
     
@@ -30,7 +33,7 @@ enum API: URLRequestConvertible {
         switch self {
             case .Authenticate, .CreatePost:
                 return .POST
-            case .MarkStreamRead, .MarkActivityRead:
+            case .MarkStreamRead, .MarkActivityRead, .AcceptFriendRequest, .DeclineFriendRequest, .IgnoreFriendRequest:
                 return .PUT
             default:
                 return .GET
@@ -57,6 +60,12 @@ enum API: URLRequestConvertible {
                 return "/post"
             case .FriendRequests:
                 return "/connections/requests/inbound"
+            case .AcceptFriendRequest(let id):
+                return "/friend-request/\(id)/accept"
+            case .DeclineFriendRequest(let id):
+                return "/friend-request/\(id)/decline"
+            case .IgnoreFriendRequest(let id):
+                return "/friend-request/\(id)/ignore"
         }
     }
     
