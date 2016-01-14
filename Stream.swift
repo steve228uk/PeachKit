@@ -177,4 +177,32 @@ extension Peach {
         
     }
     
+    /**
+     Explore connections. This is also known as "Friends of Friends" on iOS.
+     
+     - parameter callback: Callback with array of streams and optional NSError
+     */
+    public class func explore(callback: ([Stream], NSError?) -> Void) {
+    
+        Alamofire.request(API.Explore)
+            .responseJSON { response in
+                
+                if response.result.isSuccess {
+                    if let value = response.result.value {
+                        let json = JSON(value)
+                        if let data = json["data"].dictionary {
+                            if let connections = data["connections"]?.array {
+                                let streams = connections.map(parseStream)
+                                callback(streams, response.result.error)
+                                return
+                            }
+                        }
+                    }
+                }
+    
+                callback([], response.result.error)
+            }
+    
+    }
+    
 }
