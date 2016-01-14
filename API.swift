@@ -24,6 +24,7 @@ enum API: URLRequestConvertible {
     case AcceptFriendRequest(String)
     case DeclineFriendRequest(String)
     case IgnoreFriendRequest(String)
+    case LikePost(String)
     
     // MARK: - URLRequestConvertible
     
@@ -31,7 +32,7 @@ enum API: URLRequestConvertible {
     
     var method: Alamofire.Method {
         switch self {
-            case .Authenticate, .CreatePost:
+            case .Authenticate, .CreatePost, .LikePost:
                 return .POST
             case .MarkStreamRead, .MarkActivityRead, .AcceptFriendRequest, .DeclineFriendRequest, .IgnoreFriendRequest:
                 return .PUT
@@ -66,6 +67,8 @@ enum API: URLRequestConvertible {
                 return "/friend-request/\(id)/decline"
             case .IgnoreFriendRequest(let id):
                 return "/friend-request/\(id)/ignore"
+            case .LikePost:
+                return "/like"
         }
     }
     
@@ -84,6 +87,8 @@ enum API: URLRequestConvertible {
                 return Alamofire.ParameterEncoding.JSON.encode(mutableURLRequest, parameters: ["email": email, "password": password]).0
             case .CreatePost(let parameters):
                 return Alamofire.ParameterEncoding.JSON.encode(mutableURLRequest, parameters: parameters).0
+            case .LikePost(let id):
+                return Alamofire.ParameterEncoding.JSON.encode(mutableURLRequest, parameters: ["postId": id]).0
             default:
                 return mutableURLRequest
         }

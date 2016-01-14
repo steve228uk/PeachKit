@@ -39,6 +39,27 @@ public struct Post {
     /// When was this post updated
     public var updatedTime: Int64?
     
+    /**
+     Like the post on Peach
+     
+     - parameter callback: Optional callback
+     */
+    public func like(callback: ((NSError?) -> Void)?) {
+        if let postID = id {
+            Alamofire.request(API.LikePost(postID))
+                .responseJSON { response in
+                    callback?(response.result.error)
+                }
+        }
+    }
+    
+    /**
+     Like the post on Peach
+     */
+    public func like() {
+        like(nil)
+    }
+    
 }
 
 extension Peach {
