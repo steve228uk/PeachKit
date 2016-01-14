@@ -19,6 +19,7 @@ enum API: URLRequestConvertible {
     case Stream(String)
     case CreatePost([String:AnyObject]?)
     case MarkStreamRead(String)
+    case FriendRequests
     
     // MARK: - URLRequestConvertible
     
@@ -51,6 +52,8 @@ enum API: URLRequestConvertible {
                 return "/stream/id/\(id)/read"
             case .CreatePost:
                 return "/post"
+            case .FriendRequests:
+                return "/connections/requests/inbound"
         }
     }
     
