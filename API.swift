@@ -17,6 +17,7 @@ enum API: URLRequestConvertible {
     case Connections
     case Stream(String)
     case CreatePost([String:AnyObject]?)
+    case MarkStreamRead(String)
     
     // MARK: - URLRequestConvertible
     
@@ -26,6 +27,8 @@ enum API: URLRequestConvertible {
         switch self {
             case .Authenticate, .CreatePost:
                 return .POST
+            case .MarkStreamRead:
+                return .PUT
             default:
                 return .GET
         }
@@ -41,6 +44,8 @@ enum API: URLRequestConvertible {
                 return "/connections"
             case .Stream(let id):
                 return "/stream/id/\(id)"
+            case .MarkStreamRead(let id):
+                return "/stream/id/\(id)/read"
             case .CreatePost:
                 return "/post"
         }

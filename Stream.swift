@@ -63,6 +63,20 @@ public struct Stream {
         
     }
     
+    /**
+     Mark the stream as read on Peach
+     
+     - parameter callback: Optional callback with NSError
+     */
+    public func markAsRead(callback: ((NSError?) -> Void)?) {
+        if let stringID = id {
+            Alamofire.request(API.MarkStreamRead(stringID))
+                .responseJSON { response in
+                    callback?(response.result.error)
+                }
+        }
+    }
+    
 }
 
 extension Peach {
