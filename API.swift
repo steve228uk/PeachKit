@@ -41,7 +41,7 @@ enum API: URLRequestConvertible {
             case .Authenticate:
                 return "/login"
             case .Activity:
-                return "/stream/activity"
+                return "/activity"
             case .Connections:
                 return "/connections"
             case .Explore:

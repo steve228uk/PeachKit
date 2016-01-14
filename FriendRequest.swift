@@ -32,16 +32,18 @@ extension Peach {
         Alamofire.request(API.FriendRequests)
             .responseJSON { response in
                 if response.result.isSuccess {
-                    let json = JSON(response.result.value!)
-                    if let data = json["data"].dictionary {
-                        if let rawRequests = data["inboundFriendRequests"]?.array {
-                            let requests: [FriendRequest] = rawRequests.map {
-                                var request = FriendRequest()
-                                request.id = $0["id"].string
-                                request.stream = self.parseStream($0["stream"])
-                                return request
+                    if let value = response.result.value {
+                        let json = JSON(value)
+                        if let data = json["data"].dictionary {
+                            if let rawRequests = data["inboundFriendRequests"]?.array {
+                                let requests: [FriendRequest] = rawRequests.map {
+                                    var request = FriendRequest()
+                                    request.id = $0["id"].string
+                                    request.stream = self.parseStream($0["stream"])
+                                    return request
+                                }
+                                callback(requests, response.result.error)
                             }
-                            callback(requests, response.result.error)
                         }
                     }
                 }
