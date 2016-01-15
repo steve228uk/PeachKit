@@ -48,6 +48,23 @@ public enum MessageType {
     case Video
     case Drawing
     
+    public var stringValue: String {
+        switch self {
+        case .Text:
+            return "Text"
+        case .GIF:
+            return "GIF"
+        case .Image:
+            return "Image"
+        case .Shout:
+            return "Shout"
+        case .Video:
+            return "Video"
+        case .Drawing:
+            return "Drawing"
+        }
+    }
+    
 }
 
 extension Peach {
