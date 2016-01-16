@@ -103,9 +103,21 @@ extension Peach {
             switch type {
                 case "gif":
                     msg.type = .GIF
+                    if let stringWidth = json["width"].string {
+                        msg.width = Int(stringWidth)
+                    } else {
+                        msg.width = json["width"].int
+                    }
+                    if let stringHeight = json["height"].string {
+                        msg.height = Int(stringHeight)
+                    } else {
+                        msg.height = json["height"].int
+                    }
                     msg.src = json["src"].string
                 case "image":
                     msg.type = .Image
+                    msg.width = json["width"].int
+                    msg.height = json["height"].int
                     msg.src = json["src"].string
                 default:
                     msg.type = .Text
