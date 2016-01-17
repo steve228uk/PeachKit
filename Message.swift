@@ -67,6 +67,9 @@ public enum MessageType {
     case Shout
     case Video
     case Drawing
+    case Location
+    case Music
+    case Link
     
     public var stringValue: String {
         switch self {
@@ -82,6 +85,12 @@ public enum MessageType {
             return "Video"
         case .Drawing:
             return "Drawing"
+        case .Location:
+            return "Location"
+        case .Music:
+            return "Music"
+        case .Link:
+            return "Link"
         }
     }
     
@@ -101,6 +110,7 @@ extension Peach {
         
         if let type = json["type"].string {
             switch type {
+                
                 case "gif":
                     msg.type = .GIF
                     if let stringWidth = json["width"].string {
@@ -114,6 +124,7 @@ extension Peach {
                         msg.height = json["height"].int
                     }
                     msg.src = json["src"].string
+                
                 case "image":
                     msg.type = .Image
                     if let stringWidth = json["width"].string {
@@ -127,7 +138,21 @@ extension Peach {
                         msg.height = json["height"].int
                     }
                     msg.src = json["src"].string
+                
+                case "location":
+                    msg.type = .Location
+                
+                case "music":
+                    msg.type = .Music
+                
+                case "video":
+                    msg.type = .Video
+                
+                case "link":
+                    msg.type = .Link
+                
                 default:
+                    Swift.print(type)
                     msg.type = .Text
                     msg.text = json["text"].string
                     break
