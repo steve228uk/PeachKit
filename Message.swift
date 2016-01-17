@@ -10,54 +10,23 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
-public struct Message {
+public protocol Message {
     
     /// What type of message is this?
-    public var type: MessageType?
-    
-    /// Text releated to the message
-    public var text: String?
-    
-    /// Source URL of any image
-    public var src: String?
-    
-    /// Width of any image
-    public var width: Int?
-    
-    /// Height of any image
-    public var height: Int?
-    
-    internal var dictionary: [String:String] {
-        get {
-            return [
-                "type": "text",
-                "text": (text != nil) ? text! : ""
-            ]
-        }
-    }
-    
-    public init() { }
+    var type: MessageType { get set }
     
     /**
-     Fetch the image related to the message
-     
-     - parameter callback: Callback with NSImage
+     Parse json and return an instance of the message
      */
-    public func getImage(callback: (NSImage) -> Void) {
-        if let url = src {
-            Alamofire.request(.GET, url)
-                .responseData { response in
-                    if response.result.isSuccess {
-                        if let img = NSImage(data: response.result.value!) {
-                            callback(img)
-                        }
-                    }
-            }
-
-        }
-    }
+    static func messageFromJson(json: JSON) -> Message
+    
+    /// This is the dictionary that is used
+    var dictionary: [String:String] { get }
+    
+    init()
     
 }
+
 
 public enum MessageType {
     
@@ -106,60 +75,23 @@ extension Peach {
      - returns: The parsed message
      */
     internal class func parseMessage(json: JSON) -> Message {
-        var msg = Message()
         
-        if let type = json["type"].string {
-            switch type {
-                
-                case "gif":
-                    msg.type = .GIF
-                    if let stringWidth = json["width"].string {
-                        msg.width = Int(stringWidth)
-                    } else {
-                        msg.width = json["width"].int
-                    }
-                    if let stringHeight = json["height"].string {
-                        msg.height = Int(stringHeight)
-                    } else {
-                        msg.height = json["height"].int
-                    }
-                    msg.src = json["src"].string
-                
-                case "image":
-                    msg.type = .Image
-                    if let stringWidth = json["width"].string {
-                        msg.width = Int(stringWidth)
-                    } else {
-                        msg.width = json["width"].int
-                    }
-                    if let stringHeight = json["height"].string {
-                        msg.height = Int(stringHeight)
-                    } else {
-                        msg.height = json["height"].int
-                    }
-                    msg.src = json["src"].string
-                
-                case "location":
-                    msg.type = .Location
-                
-                case "music":
-                    msg.type = .Music
-                
-                case "video":
-                    msg.type = .Video
-                
-                case "link":
-                    msg.type = .Link
-                
-                default:
-                    Swift.print(type)
-                    msg.type = .Text
-                    msg.text = json["text"].string
-                    break
+        switch json["type"].string! {
+        case "gif":
+            var msg = ImageMessage.messageFromJson(json)
+            msg.type = .GIF
+            return msg
+            
+        case "image":
+            if let subtype = json["subtype"].string {
+                Swift.print(subtype)
             }
+            return ImageMessage.messageFromJson(json)
+            
+        default:
+            return TextMessage.messageFromJson(json)
         }
-        
-        return msg
+    
     }
     
 }
