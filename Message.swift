@@ -83,10 +83,18 @@ extension Peach {
             return msg
             
         case "image":
+            var msg = ImageMessage.messageFromJson(json)
             if let subtype = json["subtype"].string {
-                Swift.print(subtype)
+                switch subtype {
+                case "drawing":
+                    msg.type = .Drawing
+                case "shout":
+                    msg.type = .Shout
+                default:
+                    msg.type = .Image
+                }
             }
-            return ImageMessage.messageFromJson(json)
+            return msg
             
         default:
             return TextMessage.messageFromJson(json)
