@@ -35,6 +35,7 @@ public enum MessageType {
     case Image
     case Shout
     case Video
+    case LoopingPhoto
     case Drawing
     case Location
     case Music
@@ -52,6 +53,8 @@ public enum MessageType {
             return "Shout"
         case .Video:
             return "Video"
+        case .LoopingPhoto:
+            return "Looping Photo"
         case .Drawing:
             return "Drawing"
         case .Location:
@@ -77,6 +80,9 @@ extension Peach {
     internal class func parseMessage(json: JSON) -> Message {
         
         switch json["type"].string! {
+        case "text":
+            return TextMessage.messageFromJson(json)
+            
         case "gif":
             var msg = ImageMessage.messageFromJson(json)
             msg.type = .GIF
@@ -95,6 +101,25 @@ extension Peach {
                 }
             }
             return msg
+        
+        case "video":
+            var msg = VideoMessage.messageFromJson(json)
+            if let subtype = json["subtype"].string {
+                switch subtype {
+                default:
+                    msg.type = .LoopingPhoto
+                }
+            }
+            return msg
+            
+        case "music":
+            return MusicMessage.messageFromJson(json)
+            
+        case "location":
+            return LocationMessage.messageFromJson(json)
+            
+        case "link":
+            return LinkMessage.messageFromJson(json)
             
         default:
             return TextMessage.messageFromJson(json)
