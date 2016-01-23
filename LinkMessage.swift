@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Alamofire
 import SwiftyJSON
 
 public class LinkMessage: Message {
@@ -42,6 +43,25 @@ public class LinkMessage: Message {
         msg.url = json["url"].string
         msg.description = json["description"].string
         return msg
+    }
+    
+    /**
+     Fetch the image related to the message
+     
+     - parameter callback: Callback with NSImage
+     */
+    public func getImage(callback: (NSImage) -> Void) {
+        if let url = imageURL {
+            Alamofire.request(.GET, url)
+                .responseData { response in
+                    if response.result.isSuccess {
+                        if let img = NSImage(data: response.result.value!) {
+                            callback(img)
+                        }
+                    }
+            }
+            
+        }
     }
     
 }
