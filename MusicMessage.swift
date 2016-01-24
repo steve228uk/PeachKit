@@ -19,7 +19,7 @@ public class MusicMessage: Message {
     
     public var type: MessageType = .Music
     
-    public var dictionary: [String:String] {
+    public var dictionary: [String:AnyObject] {
         get {
             return [:]
         }

@@ -30,7 +30,7 @@ public class LinkMessage: Message {
     
     public var type: MessageType = .Link
     
-    public var dictionary: [String:String] {
+    public var dictionary: [String:AnyObject] {
         get {
             return [:]
         }

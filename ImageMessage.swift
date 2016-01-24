@@ -62,9 +62,14 @@ public class ImageMessage: Message {
         return msg
     }
     
-    public var dictionary: [String:String] {
+    public var dictionary: [String:AnyObject] {
         get {
-            return [:]
+            return [
+                "type": type.stringValue.lowercaseString,
+                "width": (width != nil) ? width! : 0,
+                "height": (height != nil) ? height! : 0,
+                "src": (src != nil) ? src! : ""
+            ]
         }
     }
     

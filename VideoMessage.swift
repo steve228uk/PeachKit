@@ -49,7 +49,7 @@ public class VideoMessage: Message {
         return msg
     }
     
-    public var dictionary: [String:String] {
+    public var dictionary: [String:AnyObject] {
         get {
             return [:]
         }

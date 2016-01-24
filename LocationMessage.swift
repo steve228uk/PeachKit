@@ -35,7 +35,7 @@ public class LocationMessage: Message {
     
     public var type: MessageType = .Location
     
-    public var dictionary: [String:String] {
+    public var dictionary: [String:AnyObject] {
         get {
             return [:]
         }

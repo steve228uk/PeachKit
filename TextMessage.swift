@@ -23,7 +23,7 @@ public class TextMessage: Message {
     
     public var text: String?
     
-    public var dictionary: [String:String] {
+    public var dictionary: [String:AnyObject] {
         get {
             return [
                 "type": "text",

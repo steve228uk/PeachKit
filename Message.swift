@@ -21,7 +21,7 @@ public protocol Message {
     static func messageFromJson(json: JSON) -> Message
     
     /// This is the dictionary that is used
-    var dictionary: [String:String] { get }
+    var dictionary: [String:AnyObject] { get }
     
     init()
     
