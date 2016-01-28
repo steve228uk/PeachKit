@@ -50,12 +50,18 @@ public class Post {
                 Alamofire.request(API.LikePost(postID))
                     .responseJSON { response in
                         self.likedByMe = true
+                        if let count = self.likeCount {
+                            self.likeCount = count + 1
+                        }
                         callback?(response.result.error)
                     }
             } else {
                 Alamofire.request(API.UnlikePost(postID))
                     .responseJSON { response in
                         self.likedByMe = false
+                        if let count = self.likeCount {
+                            self.likeCount = count - 1
+                        }
                         callback?(response.result.error)
                     }
             }
@@ -88,6 +94,10 @@ extension Peach {
         post.updatedTime = json["updatedTime"].int64
         post.createdTime = json["createdTime"].int64
         post.likeCount = json["likeCount"].int
+        
+        if let liked = json["likedByMe"].bool {
+            post.likedByMe = liked
+        }
         
         if let isUnread = json["isUnread"].bool {
             post.isUnread = isUnread

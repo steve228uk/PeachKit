@@ -70,8 +70,10 @@ enum API: URLRequestConvertible {
                 return "/friend-request/\(id)/decline"
             case .IgnoreFriendRequest(let id):
                 return "/friend-request/\(id)/ignore"
-            case .LikePost, .UnlikePost:
+            case .LikePost:
                 return "/like"
+            case .UnlikePost(let id):
+                return "/like/postID/\(id)"
         }
     }
     
