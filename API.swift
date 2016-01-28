@@ -25,6 +25,7 @@ enum API: URLRequestConvertible {
     case DeclineFriendRequest(String)
     case IgnoreFriendRequest(String)
     case LikePost(String)
+    case UnlikePost(String)
     
     // MARK: - URLRequestConvertible
     
@@ -36,6 +37,8 @@ enum API: URLRequestConvertible {
                 return .POST
             case .MarkStreamRead, .MarkActivityRead, .AcceptFriendRequest, .DeclineFriendRequest, .IgnoreFriendRequest:
                 return .PUT
+            case .UnlikePost:
+                return .DELETE
             default:
                 return .GET
         }
@@ -67,7 +70,7 @@ enum API: URLRequestConvertible {
                 return "/friend-request/\(id)/decline"
             case .IgnoreFriendRequest(let id):
                 return "/friend-request/\(id)/ignore"
-            case .LikePost:
+            case .LikePost, .UnlikePost:
                 return "/like"
         }
     }

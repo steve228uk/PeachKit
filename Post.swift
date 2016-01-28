@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 import Alamofire
 
-public struct Post {
+public class Post {
     
     /// Unique ID of the post
     public var id: String?
@@ -46,10 +46,19 @@ public struct Post {
      */
     public func like(callback: ((NSError?) -> Void)?) {
         if let postID = id {
-            Alamofire.request(API.LikePost(postID))
-                .responseJSON { response in
-                    callback?(response.result.error)
-                }
+            if !likedByMe {
+                Alamofire.request(API.LikePost(postID))
+                    .responseJSON { response in
+                        self.likedByMe = true
+                        callback?(response.result.error)
+                    }
+            } else {
+                Alamofire.request(API.UnlikePost(postID))
+                    .responseJSON { response in
+                        self.likedByMe = false
+                        callback?(response.result.error)
+                    }
+            }
         }
     }
     
@@ -72,7 +81,7 @@ extension Peach {
      - returns: A Peach Post
      */
     internal class func parsePost(json: JSON) -> Post {
-        var post = Post()
+        let post = Post()
         
         post.id = json["id"].string
         post.commentCount = json["commentCount"].int
