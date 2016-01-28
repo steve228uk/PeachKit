@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
-public class Stream {
+public struct Stream {
     
     /// Unique ID of the stream
     public var id: String?
@@ -23,9 +23,6 @@ public class Stream {
     
     /// URL to the avatar
     public var avatarSrc: String?
-    
-    /// Store the image in memory
-    var avatarImage: NSImage?
     
     /// Is the profile public?
     public var isPublic: Bool = false
@@ -53,14 +50,11 @@ public class Stream {
      */
     public func getAvatar(callback: (NSImage) -> Void) {
         
-        if let image = avatarImage {
-            callback(image)
-        } else if let src = avatarSrc {
+        if let src = avatarSrc {
             Alamofire.request(.GET, src)
                 .responseData { response in
                     if response.result.isSuccess {
                         if let img = NSImage(data: response.result.value!) {
-                            self.avatarImage = img
                             callback(img)
                         }
                     }
