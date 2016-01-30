@@ -107,6 +107,10 @@ extension Peach {
             post.message = msg.map(parseMessage)
         }
         
+        if let comments = json["comments"].array {
+            post.comments = comments.map(parseComments)
+        }
+        
         return post
     }
     
