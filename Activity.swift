@@ -24,11 +24,19 @@ public struct Activity {
     /// The message of the post the activity is related to.
     public var postMessage: [Message] = []
     
+    /// The mssage of the activtiy. This is usuaully for waves.
+    public var message: String?
+    
+    /// The time the activity was created.
+    public var createdTime: Int?
+    
 }
 
 public enum ActivityType {
     case Like
     case Comment
+    case Wave
+    case Mention
 }
 
 extension Peach {
@@ -72,19 +80,34 @@ extension Peach {
             switch type {
                 case "comment":
                     activity.type = .Comment
+                case "like":
+                    activity.type = .Like
+                case "wave":
+                    activity.type = .Wave
+                case "mention":
+                    activity.type = .Mention
                 default:
                     activity.type = .Like
             }
         }
         
         if let body = json["body"].dictionary {
+            
             activity.postID = body["postID"]?.string
+            
             if let stream = body["authorStream"] {
                 activity.authorStream = parseStream(stream)
             }
+            
             if let message = body["postMessage"]?.array {
                 activity.postMessage = message.map(parseMessage)
             }
+            
+            if let message = body["message"]?.string {
+                activity.message = message
+            }
+            
+            
         }
         
         return activity
