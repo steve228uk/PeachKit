@@ -23,9 +23,6 @@ public class ImageMessage: Message {
     /// Height of any image
     public var height: Int?
     
-    /// Stored image data
-    private var imageData: NSData?
-    
     /**
      Fetch the image related to the message
      
@@ -48,12 +45,10 @@ public class ImageMessage: Message {
     /**
      Fetch the image data related to the message
      
-     - parameter callback: Callback with NSData
+     - parameter callback: Callback with NSImage
      */
     public func getImageData(callback: (NSData) -> Void) {
-        if let data = imageData {
-            callback(data)
-        } else if let url = src {
+        if let url = src {
             Alamofire.request(.GET, url)
                 .responseData { response in
                     if response.result.isSuccess {
