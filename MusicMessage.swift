@@ -21,7 +21,10 @@ public class MusicMessage: Message {
     
     public var dictionary: [String:AnyObject] {
         get {
-            return [:]
+            return [
+                "type": "music",
+                "title": (title != nil) ? title! : ""
+            ]
         }
     }
     
