@@ -30,6 +30,9 @@ public struct Activity {
     /// The time the activity was created.
     public var createdTime: Int?
     
+    /// Has the activity been read yet?
+    public var isUnread = false
+    
 }
 
 public enum ActivityType {
@@ -52,6 +55,7 @@ extension Peach {
                 if response.result.isSuccess {
                     if let value = response.result.value {
                         let json = JSON(value)
+                        print(json)
                         if let data = json["data"].dictionary {
                             if let items = data["activityItems"]?.array {
                                 let activity: [Activity] = items.map(parseActivity)
@@ -107,6 +111,9 @@ extension Peach {
                 activity.message = message
             }
             
+            if let isUnread = body["isUnread"]?.bool {
+                activity.isUnread = isUnread
+            }
             
         }
         
