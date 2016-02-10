@@ -55,7 +55,6 @@ extension Peach {
                 if response.result.isSuccess {
                     if let value = response.result.value {
                         let json = JSON(value)
-                        print(json)
                         if let data = json["data"].dictionary {
                             if let items = data["activityItems"]?.array {
                                 let activity: [Activity] = items.map(parseActivity)
