@@ -51,7 +51,7 @@ enum API: URLRequestConvertible {
             case .Activity:
                 return "/activity"
             case .MarkActivityRead:
-                return "/activity"
+                return "/activity/read"
             case .Connections:
                 return "/connections"
             case .Explore:
