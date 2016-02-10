@@ -94,6 +94,10 @@ extension Peach {
             }
         }
         
+        if let isUnread = json["isUnread"].bool {
+            activity.isUnread = isUnread
+        }
+        
         if let body = json["body"].dictionary {
             
             activity.postID = body["postID"]?.string
@@ -108,10 +112,6 @@ extension Peach {
             
             if let message = body["message"]?.string {
                 activity.message = message
-            }
-            
-            if let isUnread = body["isUnread"]?.bool {
-                activity.isUnread = isUnread
             }
             
         }
